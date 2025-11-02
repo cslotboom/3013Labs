@@ -1,8 +1,13 @@
 import { Header } from "./components/Header";
 import { Assignments } from "./components/Assignments";
 import { useState, useEffect } from "react";
-import { TAssignment } from "./interfaces";
+import { TAssignment, TStoreAssignment } from "./interfaces";
 import { BASE_URL } from "./constants";
+
+import {useStoreAssignments} from "./store"
+
+// https://krython.com/tutorial/typescript/zustand-lightweight-state-management
+
 
 const assignmentURL = BASE_URL + '/assignments'
 
@@ -11,7 +16,6 @@ const getData = async (url: string): Promise<TAssignment[]> => {
   const data = await response.json()
   return data;
 };
-
 
 const setData = async (url: string, task: string): Promise<TAssignment[]> => {
   console.log(task)
@@ -24,22 +28,25 @@ const setData = async (url: string, task: string): Promise<TAssignment[]> => {
   return data;
 };
 
+// function _addToState(state: StoreAssignment, newAssignment: TAssignment){
+//     return  [...state.assignments, newAssignment]
+// }
 
-function setLoading(status:boolean){
-  let a = 1
-}
-// const {assignments} = useQuery( () => fetch(assignmentURL))
+// function addAssigment(assignment:TAssignment){
+//   _addToState()
+// }
 
-// let cache = {}
+
 
 function App() {
-  const [assignments, setAssignments] = useState<TAssignment[]>([]);
+  // const [assignments, setAssignments] = useState<TAssignment[]>([]);
+  const {assignments, setAssignments} = useStoreAssignments((state) => state)
+
+
 
   function initData(){
-    setLoading(true)
     getData(assignmentURL).then(data => setAssignments(data))
     console.log('recieved:' , assignments)
-    setLoading(false)
   }
 
   function addNewToDatabase(task: string){
@@ -53,8 +60,8 @@ function App() {
 
   return (
     <>
-      <Header setAssignments={addNewToDatabase} />
-      <Assignments assignments={assignments} setAssignments={setAssignments} />
+      <Header />
+      <Assignments />
     </>
   );
 }

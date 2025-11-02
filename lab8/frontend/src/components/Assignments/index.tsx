@@ -1,18 +1,19 @@
 import { TAssignment } from "../../interfaces";
 import { Assignment } from "../Assignment";
 import styles from "./assignments.module.css";
+import {useStoreAssignments} from "../../store"
 
 type Props = {
   assignments: TAssignment[];
   setAssignments: React.Dispatch<React.SetStateAction<TAssignment[]>>;
 };
-export function Assignments({ assignments, setAssignments }: Props) {
+export function Assignments() {
+  const { assignments, setAssignments} = useStoreAssignments(state => state);
   
   const handleDeleteButton = async (id: string) => {
     const updatedAssignmentList = assignments.filter(
       (assignment) => assignment.id !== id
     );
-
 
     setAssignments(updatedAssignmentList);
   };

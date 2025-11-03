@@ -13,14 +13,7 @@ export function Header({ setAssignments }: Props) {
   const [assignment, setAssignment] = useState("");
   const handleCreateButton = (e: React.FormEvent) => {
     e.preventDefault();
-
-    // setAssignments((prev) => [
-    //   ...prev,
-    //   { id: crypto.randomUUID(), task: assignment, completed: false },
-    // ]);
-    
     setAssignments(assignment);
-
     setAssignment("");
   };
 

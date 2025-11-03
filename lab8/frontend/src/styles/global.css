@@ -22,3 +22,11 @@ a {
 .active {
   color: burlywood;
 }
+
+
+.blurred{
+  filter: blur(2px);
+  user-select: none;
+  /* pointer-events: none;  */
+} 
+/* {} */

@@ -4,55 +4,62 @@ import database from "./database";
 
 import { TAssignment } from "../frontend/src/interfaces";
 
+// A helper function to create the assignments.
 function createAssigment(task:string):TAssignment{
   return {'id':crypto.randomUUID(), 'task': task, 'completed': false }
 }
-
 
 // Helper function to test "loading spinners" in React
 const sleep = (time: number) =>
   new Promise((resolve) => setTimeout(resolve, time));
 
+// Initialize the application
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 app.get("/assignments", async (req, res) => {
   await sleep(3000);
-  console.log('ran')
   res.json(database.assignments);
 });
 
 
 app.post("/assignments", async (req, res) => {
+  await sleep(3000);
+
   const {task} = req.body
-  console.log('task', task)
   const newAssignment = createAssigment(task)
-  database.assignments.push(newAssignment)
-  console.log(database.assignments )
-  
+  database.assignments.push(newAssignment)  
   res.json(database.assignments);
 });
 
 
-
-
-
-
 app.post("/assignments/:id/delete", async (req, res) => {
-  // TODO: finish implementing this function
+
   await sleep(3000);
   const id = req.params.id;
-  console.log(id);
-  res.json({ test: "you hit delete" });
+
+  const updatedAssignmentList = database.assignments.filter(
+    (assignment) => assignment.id !== id
+  );
+
+  database.assignments = updatedAssignmentList
+  res.json(database.assignments);
+
 });
 
 app.post("/assignments/:id/toggle", async (req, res) => {
-  // TODO: finish implementing this function
   await sleep(3000);
-  const id = req.params.id;
-  console.log(id);
-  res.json({ test: "you toggled complete" });
+  const {id, completed} = req.body
+  const updatedAssignmentList = database.assignments.map((assignments) =>
+    assignments.id === id
+      ? { ...assignments, completed: completed }
+      : assignments
+  );
+  
+  database.assignments = updatedAssignmentList
+  res.json(database.assignments);
+
 });
 
 app.listen(8000, () => {

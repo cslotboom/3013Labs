@@ -4,35 +4,24 @@ import styles from "./assignments.module.css";
 
 type Props = {
   assignments: TAssignment[];
-  setAssignments: React.Dispatch<React.SetStateAction<TAssignment[]>>;
+  removeDatabaseItem: (id: string) => void
+  toggleDatabaseItem: (id: string, complete: boolean) => void
 };
-export function Assignments({ assignments, setAssignments }: Props) {
+export function Assignments({ assignments, removeDatabaseItem, toggleDatabaseItem}: Props) {
   
   const handleDeleteButton = async (id: string) => {
-    const updatedAssignmentList = assignments.filter(
-      (assignment) => assignment.id !== id
-    );
-
-
-    setAssignments(updatedAssignmentList);
+    console.log('pressed delete', id)
+    removeDatabaseItem(id)
   };
 
   const handleCompletedTask = (id: string, complete: boolean) => {
-    // toggle the completion state on the server
-    const updatedAssignmentList = assignments.map((assignments) =>
-      assignments.id === id
-        ? { ...assignments, completed: complete }
-        : assignments
-    );
-
-
-    
-    setAssignments(updatedAssignmentList);
+    toggleDatabaseItem(id, complete)
   };
 
   const countCompletedTasks = () => {
     return assignments.filter((assignment) => assignment.completed).length;
   };
+
   return (
     <section className={styles.assignments}>
       <header className={styles.header}>

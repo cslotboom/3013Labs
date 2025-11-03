@@ -1,0 +1,14 @@
+.spinnercontainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 11;
+  position: absolute;
+  pointer-events: none;
+}
+
+.spinner {
+  transform: translate(-50%, -50%);
+  align-self: center;
+}
